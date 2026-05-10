@@ -1,0 +1,18 @@
+# 忽略所有的依赖包
+node_modules/
+chess-game/node_modules/
+chess-server/node_modules/
+
+# 忽略打包产物
+dist/
+dist-ssr/
+
+# 忽略所有环境变量和机密信息
+.env
+.env.*
+!.env.example
+
+# 忽略系统文件和编辑器配置
+.DS_Store
+.vscode/
+.idea/

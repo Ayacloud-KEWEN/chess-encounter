@@ -1,0 +1,17 @@
+{
+  "name": "棋遇 · Chess Encounter",
+  "short_name": "棋遇-国际象棋APP",
+  "description": "专业的 AI 国际象棋对弈与复盘工具",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1a202c",
+  "theme_color": "#1a202c",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

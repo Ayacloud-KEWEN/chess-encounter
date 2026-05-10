@@ -35,18 +35,24 @@
 
 🚀 快速启动
 1. 克隆仓库
+```bash
 git clone https://github.com/your-username/chess-encounter.git
 cd chess-encounter
+```
 
 2. 后端配置2
+```bash
 cd chess-server
 npm install
 node server.js
+```
 
-1. 前端开发
+3. 前端开发
+```bash
 cd chess-frontend
 npm install
 npm run dev
+```
 
 📄 开源协议
 MIT License. © 2026 AYA CLOUD SAS.

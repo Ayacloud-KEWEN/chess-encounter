@@ -35,18 +35,24 @@ Engine: Stockfish.wasm (NNUE enabled), chess.js
 
 🚀 Quick Start
 1. Clone
+```bash
 git clone https://github.com/your-username/chess-encounter.git
 cd chess-encounter
+```
 
 2. Backend
+```bash
 cd chess-server
 npm install
 node server.js
+```
 
 3. Frontend
+```bash
 cd chess-frontend
 npm install
 npm run dev
+```
 
 📄 License
 MIT License. © 2026 AYA CLOUD SAS.

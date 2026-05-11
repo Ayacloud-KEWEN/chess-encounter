@@ -12,7 +12,7 @@
       @back-to-menu="currentScreen = 'start'" />
 
     <footer class="app-footer" :class="{ 'start-footer': currentScreen === 'start' }">
-      v2.09 | © 2026 AYA CLOUD SAS. All rights reserved.
+      v2.10 | © 2026 AYA CLOUD SAS. All rights reserved.
     </footer>
   </div>
 </template>

@@ -67,7 +67,7 @@ const isHintSquare = (r, c) => props.hintSquare && (props.hintSquare.from === ge
 </script>
 
 <style scoped>
-.board-container { width: 100%; margin: 10px 0; overflow: hidden; }
+.board-container { width: 100%; margin: 10px 0; overflow: hidden; touch-action: none; }
 .board { display: flex; flex-direction: column; border: 2px solid rgba(255, 255, 255, 0.15); transition: filter 0.3s ease;}
 .board-disabled { pointer-events: none; filter: brightness(0.6) grayscale(30%); }
 .board:not(.board-disabled) { animation: yourTurnGlow 2s infinite alternate; }
@@ -94,10 +94,43 @@ const isHintSquare = (r, c) => props.hintSquare && (props.hintSquare.from === ge
 .in-check-glow { background-color: rgba(231, 76, 60, 0.8) !important; animation: checkPulse 0.5s infinite alternate; }
 .hint-glow { box-shadow: inset 0 0 0 100px rgba(52, 152, 219, 0.4), inset 0 0 20px #3498db !important; }
 
-.piece { font-size: clamp(30px, 9vw, 55px); filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.5)); z-index: 2; }
+.piece { 
+  font-size: clamp(30px, 9vw, 55px); 
+  filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.5)); 
+  z-index: 2; 
+  transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.15s;
+  will-change: transform; 
+}
+.highlight-selected .piece {
+  transform: scale(1.15) translateY(-6px); /* 放大并上浮 */
+  filter: drop-shadow(0px 12px 8px rgba(0, 0, 0, 0.7)); /* 阴影加深，立体感爆棚 */
+}
 .white-piece { color: #f8f8f8; }
 .black-piece { color: #111; }
 
-.legal-move-hint { position: absolute; width: 25%; height: 25%; border-radius: 50%; background-color: rgba(0, 0, 0, 0.3); pointer-events: none; z-index: 1; }
-.is-capture-hint { width: 80%; height: 80%; background-color: transparent; border: 5px solid rgba(231, 76, 60, 0.8); }
+.legal-move-hint { 
+  position: absolute; 
+  width: 25%; 
+  height: 25%; 
+  border-radius: 50%; 
+  background-color: rgba(0, 0, 0, 0.4); 
+  pointer-events: none; 
+  z-index: 1; 
+  animation: pulse-hint 1.5s infinite;
+}
+
+@keyframes pulse-hint {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.6; }
+}
+
+.is-capture-hint { 
+  width: 80%; 
+  height: 80%; 
+  background-color: transparent; 
+  border: 5px solid rgba(231, 76, 60, 0.8); 
+  animation: none; 
+}
+
 </style>

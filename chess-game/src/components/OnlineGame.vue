@@ -127,6 +127,12 @@ const captureSound = new Audio('/audio/capture.wav');
 const checkSound = new Audio('/audio/check.wav');
 const gameOverSound = new Audio('/audio/gameover.mp3'); 
 
+const vibrate = (pattern) => {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    navigator.vibrate(pattern);
+  }
+};
+
 const startClock = () => {
   clearInterval(clockInterval);
   clockInterval = setInterval(() => {
@@ -157,6 +163,7 @@ onMounted(() => {
 
     if (data.isGameOver) {
       isGameOver.value = true;
+      vibrate([100, 50, 100, 50, 200]);
       if (game.isCheckmate()) {
         gameOverReason.value = game.turn() === myColor.value ? t('game.lose') : t('game.win');
       } else {
@@ -165,12 +172,15 @@ onMounted(() => {
       gameOverSound.play().catch(() => { });
       clearInterval(clockInterval);
     } else if (isCheck.value) {
+      vibrate([50, 30, 50]);
       checkSound.currentTime = 0;
       checkSound.play().catch(() => { });
     } else if (data.move.captured) {
+      vibrate(40);
       captureSound.currentTime = 0;
       captureSound.play().catch(() => { });
     } else {
+      vibrate(15);
       let s = data.move.color === 'w' ? moveWhiteSound : moveBlackSound;
       s.currentTime = 0;
       s.play().catch(() => { });
@@ -186,6 +196,7 @@ onMounted(() => {
 
   props.socket.on('opponent_surrendered', () => {
     isGameOver.value = true;
+    vibrate([100, 50, 100, 50, 200]);
     gameOverReason.value = t('game.opp_surrender'); 
     gameOverSound.play().catch(() => { });
     clearInterval(clockInterval);
@@ -193,6 +204,7 @@ onMounted(() => {
 
   props.socket.on('game_over', (data) => {
     isGameOver.value = true;
+    vibrate([100, 50, 100, 50, 200]);
     gameOverReason.value = t('game.timeout'); 
     gameOverSound.play().catch(() => { });
     clearInterval(clockInterval);

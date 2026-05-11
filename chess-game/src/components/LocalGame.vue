@@ -79,6 +79,12 @@ const checkSound = new Audio('/audio/check.wav');
 const gameOverSound = new Audio('/audio/gameover.mp3');
 const hintSound = new Audio('/audio/hint.wav');
 
+const vibrate = (pattern) => {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    navigator.vibrate(pattern);
+  }
+};
+
 const game = new Chess();
 let aiPlayer = null;
 let coachPlayer = null;
@@ -109,9 +115,16 @@ const difficultySettings = {
 
 const playSound = (res, check) => {
   let s;
-  if (check) s = checkSound;
-  else if (res.captured) s = captureSound;
-  else s = res.color === 'w' ? moveWhiteSound : moveBlackSound;
+  if (check) {
+    s = checkSound;
+    vibrate([50, 30, 50]); 
+  } else if (res.captured) {
+    s = captureSound;
+    vibrate(40);           
+  } else {
+    s = res.color === 'w' ? moveWhiteSound : moveBlackSound;
+    vibrate(15);          
+  }
   s.currentTime = 0;
   s.play().catch(() => { });
 };
@@ -123,6 +136,7 @@ const updateGameState = () => {
 
   if (game.isGameOver()) {
     isGameOver.value = true;
+    vibrate([100, 50, 100, 50, 200]);
     setTimeout(() => {
       gameOverSound.currentTime = 0;
       gameOverSound.play().catch(() => { });

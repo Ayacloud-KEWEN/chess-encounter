@@ -52,6 +52,11 @@
 
 body {
   margin: 0;
+  -webkit-touch-callout: none; /* 禁用系统默认菜单 */
+  -webkit-user-select: none;   /* 禁用长按选中文字 */
+  user-select: none;           /* 禁用长按选中文字 */
+  touch-action: manipulation;  /* 禁用双击放大，优化点击延迟 */
+  overflow-x: hidden;          /* 防止页面横向乱晃 */
 }
 
 h1,

@@ -78,7 +78,15 @@
       <div v-if="showRules" class="modal-overlay" @click.self="showRules = false">
         <div class="modal-content heavy-glass-card">
           <button class="close-modal-btn" @click="showRules = false">✕</button>
+          
           <h2 class="modal-title"> </h2>
+          
+          <div class="video-btn-wrapper">
+            <button @click="openVideoRules" class="video-rules-btn">
+              <span class="play-icon">▶</span> {{$t('menu.watch_video')}}
+            </button>
+          </div>
+          
           <div class="rules-images-container">
             <img src="/img/Piece.png" alt="Rules" class="rules-img" />
             <img src="/img/Rules.png" alt="Rules" class="rules-img" />
@@ -136,6 +144,28 @@ const startMusicOnFirstTouch = () => {
         console.log("Automatic music wake-up failed:", e);
       });
     }
+  }
+};
+
+const openVideoRules = () => {
+  const bilibiliUrl = 'https://www.bilibili.com/video/BV1mU5M6kEbf/'; 
+  const youtubeUrl = 'https://www.youtube.com/watch?v=70hSEIU9U_s';  
+
+  try {
+
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+
+    if (timeZone === 'Asia/Shanghai' || timeZone === 'Asia/Chongqing' || timeZone === 'Asia/Urumqi') {
+
+      window.open(bilibiliUrl, '_blank');
+    } else {
+
+      window.open(youtubeUrl, '_blank');
+    }
+  } catch (error) {
+
+    window.open(youtubeUrl, '_blank');
   }
 };
 
@@ -365,4 +395,52 @@ onUnmounted(() => {
 .modal-tip { text-align: center; color: #a0aec0; font-size: 12px; margin-top: 20px; }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+
+.video-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+
+.video-rules-btn {
+
+  background: linear-gradient(135deg, rgba(233, 30, 99, 0.8), rgba(156, 39, 176, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px; 
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  backdrop-filter: blur(5px);
+}
+
+.video-rules-btn .play-icon {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+
+.video-rules-btn:hover {
+  transform: translateY(-3px) scale(1.02); 
+  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.6); 
+  background: linear-gradient(135deg, rgba(233, 30, 99, 1), rgba(156, 39, 176, 1));
+}
+
+.video-rules-btn:hover .play-icon {
+  transform: scale(1.2); 
+}
+
+.video-rules-btn:active {
+  transform: translateY(1px); 
+}
 </style>

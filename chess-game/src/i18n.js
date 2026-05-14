@@ -6,6 +6,7 @@ const messages = {
       rules: "Rules", title: "♔ Chess · Master Ascent", subtitle: "Step by step to become a grandmaster",
       choose_diff: "Select Difficulty", play_local: "Play Local", play_online: "Play Online",
       tip: "Tip: Click background or top-right button to close",
+      watch_video: "Watch Video Tutorial",
     },
     diff: {
       beginner: "Beginner", beginner_desc: "Opponent makes mistakes, perfect for learning.",
@@ -49,6 +50,7 @@ const messages = {
       rules: "规则说明", title: "♔ 棋遇 · 大师进阶", subtitle: "一步一步成为国际象棋大师",
       choose_diff: "选择对弈等级", play_local: "开始对弈", play_online: "联机对战",
       tip: "提示：点击背景或右上角按钮返回",
+      watch_video: "观看视频教程",
     },
     diff: {
       beginner: "初学者", beginner_desc: "对手会经常犯错，适合新手练手。",
@@ -92,6 +94,7 @@ const messages = {
       rules: "Règles", title: "♔ Échecs · Ascension", subtitle: "Devenez un grand maître pas à pas",
       choose_diff: "Choisir la difficulté", play_local: "Jouer en Local", play_online: "Jouer en Ligne",
       tip: "Astuce : Cliquez sur le fond pour fermer",
+      watch_video: "Regarder le tutoriel vidéo",
     },
     diff: {
       beginner: "Débutant", beginner_desc: "L'adversaire fait des erreurs, idéal pour apprendre.",

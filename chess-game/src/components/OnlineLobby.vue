@@ -14,7 +14,9 @@
     <div class="radar-container glass-card">
       
       <div v-if="matchSuccessData" class="success-state">
-        <div class="swords-icon">⚔️</div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="custom-svg success-svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
         <h3 class="success-title">{{ $t('lobby.match_success') }}</h3>
         <p class="color-reveal">
           {{ $t('lobby.assigned') }} 
@@ -33,7 +35,9 @@
       </div>
 
       <div v-else-if="lobbyState === 'hosting'" class="hosting-state">
-        <div class="static-globe">🏠</div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="custom-svg host-svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+        </svg>
         <p class="searching-text">{{ $t('lobby.room_code') }}</p>
         <div class="room-code-display">{{ privateRoomCode }}</div>
         <p class="timer">{{ $t('lobby.waiting_friend') }}</p>
@@ -41,7 +45,9 @@
       </div>
 
       <div v-else-if="lobbyState === 'joining'" class="joining-state">
-        <div class="static-globe">🔑</div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="custom-svg join-svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+        </svg>
         <input 
           v-model="joinCode" 
           type="text" 
@@ -58,7 +64,9 @@
       </div>
 
       <div v-else class="idle-state">
-        <div class="static-globe">🌍</div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="custom-svg idle-svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+        </svg>
         <p>{{ $t('lobby.ready') }}</p>
         <div class="action-column">
           <button @click="startSearch" class="modern-btn primary-btn pulse-btn" :disabled="!isConnected">
@@ -249,4 +257,33 @@ p { color: #bdc3c7; font-size: 14px; margin-bottom: 25px; }
 @keyframes pulseBtn { 0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); } 100% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+
+.custom-svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  stroke-width: 1.5;
+  transition: all 0.3s ease;
+}
+
+.idle-svg {
+  color: #3498db;
+  filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.6));
+}
+
+.host-svg {
+  color: #f1c40f;
+  filter: drop-shadow(0 0 15px rgba(241, 196, 15, 0.6));
+}
+
+.join-svg {
+  color: #9b59b6;
+  filter: drop-shadow(0 0 15px rgba(155, 89, 182, 0.6));
+}
+
+.success-svg {
+  color: #e74c3c;
+  filter: drop-shadow(0 0 20px rgba(231, 76, 60, 0.8));
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 </style>

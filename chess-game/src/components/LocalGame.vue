@@ -53,6 +53,37 @@
         <button @click="emit('back-to-menu')" class="modern-btn secondary-btn" :disabled="isAnalyzing">{{ $t('game.btn_menu') }}</button>
       </div>
     </div>
+
+    <Transition name="fade">
+      <div v-if="showPromotionModal" class="modal-overlay" @click.self="cancelPromotion">
+        <div class="modal-content heavy-glass-card promotion-visual-card">
+          
+          <div class="promo-source-pawn">
+            <span :class="promoColorClass">{{ promoSymbols.p }}</span>
+          </div>
+
+          <div class="promo-connector">
+            <div class="connector-line"></div>
+          </div>
+
+          <div class="promotion-options-grid">
+            <div class="promo-option" @click="confirmPromotion('q')">
+              <span :class="promoColorClass">{{ promoSymbols.q }}</span>
+            </div>
+            <div class="promo-option" @click="confirmPromotion('r')">
+              <span :class="promoColorClass">{{ promoSymbols.r }}</span>
+            </div>
+            <div class="promo-option" @click="confirmPromotion('b')">
+              <span :class="promoColorClass">{{ promoSymbols.b }}</span>
+            </div>
+            <div class="promo-option" @click="confirmPromotion('n')">
+              <span :class="promoColorClass">{{ promoSymbols.n }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
   </div>
 </template>
 
@@ -99,6 +130,10 @@ const lastMove = ref(null);
 const isGameOver = ref(false);
 const gameOverReason = ref('');
 const isCheck = ref(false);
+const showPromotionModal = ref(false);
+const pendingPromotionMove = ref(null);
+const promoSymbols = { p: '♙', q: '♕', r: '♖', b: '♗', n: '♘' };
+const promoColorClass = 'promo-white';
 const gameHistory = ref([game.fen()]);
 const isAnalyzing = ref(false);
 const currentAnalysisStep = ref(0);
@@ -173,16 +208,43 @@ const executeMove = (move) => {
 const handleSquareClick = (squareId) => {
   if (currentTurn.value === 'b' || isGameOver.value || isAnalyzing.value) return;
   const sq = game.get(squareId);
+  
   if (selectedSquare.value) {
-    const m = legalMoves.value.find(move => move.to === squareId);
-    if (m) return executeMove(m);
+    const moveCandidates = legalMoves.value.filter(move => move.to === squareId);
+    
+    if (moveCandidates.length > 0) {
+      if (moveCandidates[0].promotion) {
+        pendingPromotionMove.value = squareId;
+        showPromotionModal.value = true;
+        return;
+      } else {
+        return executeMove(moveCandidates[0]);
+      }
+    }
   }
+  
   if (sq && sq.color === 'w') {
     selectedSquare.value = squareId;
     legalMoves.value = game.moves({ square: squareId, verbose: true });
   } else {
     selectedSquare.value = null; legalMoves.value = [];
   }
+};
+
+const cancelPromotion = () => {
+  showPromotionModal.value = false;
+  pendingPromotionMove.value = null;
+  selectedSquare.value = null;
+  legalMoves.value = [];
+};
+
+const confirmPromotion = (pieceType) => {
+  const m = legalMoves.value.find(
+    move => move.to === pendingPromotionMove.value && move.promotion === pieceType
+  );
+  showPromotionModal.value = false;
+  pendingPromotionMove.value = null;
+  if (m) executeMove(m);
 };
 
 const requestHint = async () => {
@@ -308,4 +370,93 @@ onUnmounted(() => {
   align-items: center;
   white-space: nowrap; 
 }
+
+/* ==========================================================================
+   🌟 霓虹闪光升变弹窗 (纯视觉升级版)
+   ========================================================================== */
+
+/* 弹窗卡片本身不再有限定宽度，而是适应内容 */
+.promotion-visual-card {
+  max-width: none;
+  width: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+}
+
+/* 1. 源头：即将升变的兵 */
+.promo-source-pawn {
+  font-size: 60px;
+  margin-bottom: 5px;
+  /* 初始时兵是静止不发光的 */
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,0.6));
+}
+
+/* 2. 连接线条 */
+.promo-connector {
+  width: 2px;
+  height: 40px;
+  margin-bottom: 15px;
+  /* 🌟 线条带有静谧的蓝色虹吸光晕，暗示能量流动 */
+  background: linear-gradient(to bottom, transparent, #3498db, transparent);
+  box-shadow: 0 0 10px #3498db, 0 0 20px #3498db;
+}
+
+/* 3. 进化形态选项 */
+.promotion-options-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.promo-option {
+  width: 75px;
+  height: 75px;
+  /* 更加清澈的毛玻璃底座 */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 45px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+  
+  /* 🌟 核心：霓虹闪光呼吸动画！ */
+  animation: neon-pulse 2s infinite;
+  will-change: box-shadow, border-color;
+}
+
+/* 霓虹闪光 Keyframes：在天蓝色和紫红色之间平滑呼吸 */
+@keyframes neon-pulse {
+  0% { 
+    border-color: rgba(52, 152, 219, 0.5); /* 天蓝 */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.4), inset 0 0 10px rgba(0,0,0,0.2);
+  }
+  50% { 
+    border-color: rgba(155, 89, 182, 1); /* 紫罗兰 */
+    box-shadow: 0 0 25px rgba(155, 89, 182, 0.8), inset 0 0 15px rgba(255,255,255,0.1);
+  }
+  100% { 
+    border-color: rgba(52, 152, 219, 0.5); /* 天蓝 */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.4), inset 0 0 10px rgba(0,0,0,0.2);
+  }
+}
+
+/* 鼠标悬浮时暂停呼吸，变成强力发光的白色选中效果 */
+.promo-option:hover {
+  animation-play-state: paused;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #fff;
+  transform: translateY(-8px) scale(1.08);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.7), inset 0 0 20px rgba(255,255,255,0.2);
+}
+
+/* 匹配原本的棋子颜色发光配置 */
+.promo-white { color: #f8f8f8; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.6)); }
+.promo-black { color: #111; filter: drop-shadow(0 2px 2px rgba(255,255,255,0.3)); }
 </style>
